@@ -1,3 +1,122 @@
+# README from dshong
+
+## How to run?
+
+1. Clone the repository
+    ```bash
+    git clone https://github.com/dazory/robotic_transformer_pytorch.git
+    ```
+2. Run docker
+   ```bash
+   docker pull dshong/rt:rt-1-pytorch-tf
+   cd $REPO_PATH
+   ./run_docker 0
+   ```
+3. Train the model
+   ```bash
+   cd $REPO_PATH
+   python3 main.py \
+   --train-split "train[:1000]" \
+   --eval-split "train[:1000]" \
+   --train-batch-size 8 \
+   --eval-batch-size 8 \
+   --eval-freq 100 \
+   --checkpoint-freq 1000
+    ```
+4. Inference with the pretrained model
+    
+    You can download the checkpoint files at [here]. After downloading `rt1` and replace it with the `rt1` folder in `robotic_transformer_pytorch/checkpoints` folder.
+   ```bash
+   cd $REPO_PATH
+   python3 eval.py \
+   --eval-split "train[:1000]" \
+   --eval-batch-size 2 \
+   --eval-freq 100 \
+   --checkpoint-freq 1000 \
+   --load-checkpoint "checkpoints/rt1/checkpoint_32000_loss_133.915.pt" 
+   ```
+   
+## Results
+
+### Training and evaluation loss
+
+You can see the training loss at [wandb](wandb.ai/hong-dasol/rt1-pytorch?workspace=user-hong-dasol).
+
+## Examples of dataset
+
+```python
+from data import create_dataset
+
+eval_dataset = create_dataset(
+    datasets="fractal20220817_data",
+    split="train[:1000]",
+    trajectory_length=6,
+    batch_size=2,
+    num_epochs=1)
+with torch.no_grad():
+    for batch in eval_dataset:
+       # ...
+```
+,where
+```text
+batch: {dict: 2}
+  L observation: {dict: 3}
+  |  L image: {ndarray: (8, 6, 256, 320, 3)}
+  |  L embedding: {ndarray: (8, 6, 512)}
+  |  L instruction: {ndarray: (8, 6)}
+  L action: {dict: 3}
+     L world_vector: {ndarray: (8, 6, 3)}
+     L base_displacement_vertical_rotation: {ndarray: (8, 6, 1)}
+     L terminate_episode: {ndarray: (8, 6)}
+     L rotation_delta: {ndarray: (8, 6, 3)}
+     L base_displacement: {ndarray: (8, 6, 2)}
+     L gripper_closedness_action: {ndarray: (8, 6, 1)}
+```
+
+### `image` and `instruction`
+
+<details>
+<sumary>example1</sumary>
+
+`image`:
+
+<img src="vis/batch0/image/batch0_frame0.png" width="80">
+<img src="vis/batch0/image/batch0_frame1.png" width="80">
+<img src="vis/batch0/image/batch0_frame2.png" width="80">
+<img src="vis/batch0/image/batch0_frame3.png" width="80">
+<img src="vis/batch0/image/batch0_frame4.png" width="80">
+<img src="vis/batch0/image/batch0_frame5.png" width="80">
+
+`instruction`:
+```text
+"pick rxbar chocolate from bottom drawer and place on counter"
+```
+</details>
+
+
+<details>
+<sumary>example2</sumary>
+
+`image`:
+
+<img src="vis/batch6/image/batch6_frame0.png" width="80">
+<img src="vis/batch6/image/batch6_frame1.png" width="80">
+<img src="vis/batch6/image/batch6_frame2.png" width="80">
+<img src="vis/batch6/image/batch6_frame3.png" width="80">
+<img src="vis/batch6/image/batch6_frame4.png" width="80">
+<img src="vis/batch6/image/batch6_frame5.png" width="80">
+
+`instruction`:
+```text
+"close middle drawer"
+```
+</details>
+
+
+
+# Original version of README
+---
+
 <img src="./rt1.png" width="450px"></img>
 
 ## Robotic Transformer - Pytorch
