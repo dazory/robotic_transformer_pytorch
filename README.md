@@ -25,7 +25,7 @@
     ```
 4. Inference with the pretrained model
     
-    You can download the checkpoint files at [here]. After downloading `rt1` and replace it with the `rt1` folder in `robotic_transformer_pytorch/checkpoints` folder.
+    You can download the checkpoint files at [here](https://drive.google.com/file/d/1XzlTR9j3c4moiolCbuDFHjmpyMdU6MMQ/view?usp=drive_link). After downloading `rt1` and replace it with the `rt1` folder in `robotic_transformer_pytorch/checkpoints` folder.
    ```bash
    cd $REPO_PATH
    python3 eval.py \
