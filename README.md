@@ -40,7 +40,7 @@
 
 ### Training and evaluation loss
 
-You can see the training loss at [wandb](wandb.ai/hong-dasol/rt1-pytorch?workspace=user-hong-dasol).
+You can see the training loss at [wandb](https://wandb.ai/hong-dasol/rt1-pytorch?workspace=user-hong-dasol).
 
 ## Examples of dataset
 
